@@ -121,6 +121,10 @@ class CoreDataManager {
             do {
                 let managingUser = try privateMOC.fetch(request) as [User]
             
+                if managingUser.isEmpty {
+                    return 
+                }
+                
                 guard let coUsers = managingUser[0].coParents?.allObjects as? [User] else { return }
                 
                 // means user is not registered , so save new user
