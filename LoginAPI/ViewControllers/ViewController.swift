@@ -31,6 +31,7 @@ class ViewController: UIViewController {
     let coreDataContext = CoreDataManager.shared
     // shared context for NetworkManager class
     let networkContext = NetworkManager.shared
+    let manager = FileSystemManager.shared
     
     var shouldRemember : Bool = false
     
@@ -104,7 +105,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        // if user didn't opt to remember when re-opening the app, this viewcontroller will appear.
+        // In that case, data will still persist in core data
+        // so, if not remembered, can delete data
+        if !defaults.bool(forKey: "RememberMe") {
+            let credentials = KeyChainManager.shared.retreiveCredentials()
+            let mailId = credentials["mailId"]
+            
+            KeyChainManager.shared.deleteData()
+            coreDataContext.deleteData(mailId: mailId!)
+            manager.clearCache()
+        }
         
         // Do any additional setup after loading the view
         self.emailField.delegate = self
