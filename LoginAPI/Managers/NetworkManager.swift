@@ -178,6 +178,7 @@ class NetworkManager {
            
             completionCalls.append(completion)
             self.queuedCalls.append(generateCoParentHTTPRequest(completion:))
+            
             if !isLoginApiActive {
                 generateHTTPRequest(shouldRefresh : true, mailId: loginMail, password: loginPass) { _ in }
                 isLoginApiActive = true

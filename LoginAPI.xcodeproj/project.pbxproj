@@ -20,6 +20,7 @@
 		910F8F5E2833FA260092D427 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910F8F5D2833FA260092D427 /* CoreDataManager.swift */; };
 		913DDEF1283E1529008CC486 /* ParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913DDEF0283E1529008CC486 /* ParentViewController.swift */; };
 		915B8EFF283CDE30000C1DB1 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915B8EFE283CDE30000C1DB1 /* KeyChainManager.swift */; };
+		916F4F0D285B0C2B001D6CAB /* UIImage+image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916F4F0C285B0C2B001D6CAB /* UIImage+image.swift */; };
 		91CB304D2840A03C00F046FE /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CB304C2840A03C00F046FE /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		910F8F5D2833FA260092D427 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		913DDEF0283E1529008CC486 /* ParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentViewController.swift; sourceTree = "<group>"; };
 		915B8EFE283CDE30000C1DB1 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
+		916F4F0C285B0C2B001D6CAB /* UIImage+image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+image.swift"; sourceTree = "<group>"; };
 		91CB304C2840A03C00F046FE /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,6 +102,7 @@
 		910F8F43283388BB0092D427 /* LoginAPI */ = {
 			isa = PBXGroup;
 			children = (
+				916F4F0B285B0C0C001D6CAB /* Extensions */,
 				915B8F00283CE127000C1DB1 /* Managers */,
 				910002332834D7F500D9AA32 /* CollectionView */,
 				910002322834D7CD00D9AA32 /* ViewControllers */,
@@ -121,6 +124,14 @@
 				91CB304C2840A03C00F046FE /* NetworkManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		916F4F0B285B0C0C001D6CAB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				916F4F0C285B0C2B001D6CAB /* UIImage+image.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,6 +210,7 @@
 				910F8F4F283388BB0092D427 /* LoginAPI.xcdatamodeld in Sources */,
 				910002352834F06F00D9AA32 /* DetailsViewController.swift in Sources */,
 				91CB304D2840A03C00F046FE /* NetworkManager.swift in Sources */,
+				916F4F0D285B0C2B001D6CAB /* UIImage+image.swift in Sources */,
 				915B8EFF283CDE30000C1DB1 /* KeyChainManager.swift in Sources */,
 				910F8F5C2833F3F20092D427 /* ChildViewController.swift in Sources */,
 				913DDEF1283E1529008CC486 /* ParentViewController.swift in Sources */,

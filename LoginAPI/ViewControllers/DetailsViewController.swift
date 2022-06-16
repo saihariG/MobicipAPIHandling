@@ -46,7 +46,9 @@ class DetailsViewController: UIViewController {
         birthDateLabel.text = "Birth Date : \(childUser.birth_date)"
         uuidLabel.text = "uuid : \(String(describing: childUser.uuid!))"
         timezoneLabel.text = "Time Zone : \(String(describing: childUser.timezone))"
-        falconidLabel.text = "falcon id : \(String(describing: childUser.falcon_id!))"
+        if let falcon_id = childUser.falcon_id {
+            falconidLabel.text = "falcon id : \(String(describing: falcon_id))"
+        }
         filterLevelIdLabel.text = "filter level id : \(String(childUser.filter_level_id))"
         
     }
