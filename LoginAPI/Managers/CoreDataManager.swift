@@ -14,6 +14,7 @@ class CoreDataManager {
     static let shared = CoreDataManager()
 
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let manager = FileSystemManager.shared
     //var coChildCount = 0
     
     func saveChanges(pc : NSManagedObjectContext) {
@@ -91,8 +92,12 @@ class CoreDataManager {
                     // create new user
                     parentUser.name = userApiData["name"] as? String
                     parentUser.email = userApiData["email"] as? String
+                    parentUser.thumbnail = userApiData["thumbnail"] as? String
                 }
                 else {
+                    // update information
+                    existingParent[0].name = userApiData["name"] as? String
+                    existingParent[0].thumbnail = userApiData["thumbnail"] as? String
                     print("user already registered!")
                 }
                 
@@ -141,6 +146,7 @@ class CoreDataManager {
                             //print("  \(coParent["email"]!) -->  \(role!)")
                             coUser.name = coParent["name"] as? String
                             coUser.email = coParent["email"] as? String
+                            coUser.thumbnail = coParent["thumbnail"] as? String
                             
                             managingUser[0].addToCoParents(coUser)
   
@@ -190,6 +196,16 @@ class CoreDataManager {
                                             }
                                         }
                                         
+                                        // updating co-parent's thumbnail
+                                        if let thumbnail = coParent["thumbnail"] as? String {
+                                            if coParentUser.thumbnail != thumbnail {
+                                                isUpdated = true
+                                                print("co-parent thumbnail updated!")
+                                                coParentUser.thumbnail = thumbnail
+                                                manager.deleteImageFromFileManager(imageName: coParentUser.email!)
+                                            }
+                                        }
+                                        
                                         saveChanges(pc: privateMOC)
                                         
                                         // for each-coparent check if any of it's child is updated
@@ -217,7 +233,7 @@ class CoreDataManager {
                                                                     isUpdated = true
                                                                     print("updating co-child thumbnail!")
                                                                     coChild.thumbnail = thumbnail
-                                                                    ChildViewController.deleteImageFromFileManager(imageName: coChild.uuid!)
+                                                                    manager.deleteImageFromFileManager(imageName: coChild.uuid!)
                                                                 }
                                                             }
                                                             
@@ -269,6 +285,7 @@ class CoreDataManager {
                                         
                                         newUser.name = coParent["name"] as? String
                                         newUser.email = coParent["email"] as? String
+                                        newUser.thumbnail = coParent["thumbnail"] as? String
                                         
                                         managingUser[0].addToCoParents(newUser)
                                         

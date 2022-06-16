@@ -14,6 +14,7 @@ class ParentViewController: UIViewController {
     
     let coredata = CoreDataManager.shared
     let networkContext = NetworkManager.shared
+    let manager = FileSystemManager.shared
     
     var coParentList : [User] =  CoreDataManager.shared.fetchCoParentList()
     var selectedParentIdx = -1
@@ -70,7 +71,7 @@ class ParentViewController: UIViewController {
         
         KeyChainManager.shared.deleteData()
         coredata.deleteData(mailId: mailId!)
-        ChildViewController.clearCache()
+        manager.clearCache()
         navigationController?.popViewController(animated: true)
     }
     
@@ -104,18 +105,66 @@ extension ParentViewController : UICollectionViewDataSource {
             return cell
         }
         
+        guard let email = coParentList[indexPath.row].email else {
+            print("email is nil")
+            return cell
+        }
+    
         // fetching name from child list and setting to label
         guard let name = coParentList[indexPath.row].name else {
             print("name may be nil!")
             return cell
         }
-        
         cell.childName.text = name
         
-        if let image = UIImage.image(withLabel: name) {
+        let urlString = coParentList[indexPath.row].thumbnail
+
+        // if urlString is empty or nil, set image based on initials
+        if urlString == "" || urlString == nil {
+            guard let image = UIImage.image(withLabel: name) else {
+                return cell
+            }
             cell.profileImg.image = image
+            return cell
+        }
+        
+        // checking if image is already downloaded in file manager
+        if let image = manager.getImageFromFileManager(imageName: email) {
+            cell.profileImg.image = image
+            return cell
+        }
+        
+        guard let url = URL(string: urlString!) else {
+            print("invalid url!")
+            return cell
         }
             
+        cell.tag = indexPath.row
+        DispatchQueue.global().async {
+                    let data = try? Data(contentsOf: url)
+                    if let data = data {
+                        let image = UIImage(data: data)!
+                        DispatchQueue.main.async {
+                            // saving the downloaded image in file manager
+                            guard let cacheDirectory  = self.manager.getImagePath(name: "\(String(describing: email))") else {
+                                return
+                            }
+                            
+                            do {
+                                try data.write(to: cacheDirectory)
+                            }
+                            catch {
+                                print("error canot save \(String(describing: email))'s profile!")
+                                return
+                            }
+                            
+                            if cell.tag == indexPath.row {
+                                cell.profileImg.image = image
+                            }
+                        }
+                    }
+        }
+        
         return cell
     }
     

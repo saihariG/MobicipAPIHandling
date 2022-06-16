@@ -17,9 +17,6 @@ class ChildViewController: UIViewController {
     // variable for total no of children
     var noOfChildren = 0
     
-    // file manager instance
-    let manager = FileManager.default
-    
     var parentEmail = ""
     var parentName = ""
     
@@ -54,7 +51,6 @@ class ChildViewController: UIViewController {
     
 }
 
-
 extension ChildViewController : UICollectionViewDataSource {
     // delegate function to set no of items in collection view
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -88,7 +84,7 @@ extension ChildViewController : UICollectionViewDataSource {
         }
         
         // checking if image is already downloaded in file manager
-        if let image = getImageFromFileManager(imageName: uuid) {
+        if let image = FileSystemManager.shared.getImageFromFileManager(imageName: uuid) {
             cell.profileImg.image = image
             return cell
         }
@@ -105,7 +101,7 @@ extension ChildViewController : UICollectionViewDataSource {
                         let image = UIImage(data: data)!
                         DispatchQueue.main.async {
                             // saving the downloaded image in file manager
-                            guard let cacheDirectory  = self.getImagePath(name: "\(String(describing: uuid))") else {
+                            guard let cacheDirectory  = FileSystemManager.shared.getImagePath(name: "\(String(describing: uuid))") else {
                                 return
                             }
                             
@@ -144,79 +140,4 @@ extension ChildViewController : UICollectionViewDelegateFlowLayout {
         let width = view.frame.size.width
         return CGSize(width: width , height: 80)
     }
-}
-
-extension ChildViewController {
-    func getImageFromFileManager(imageName : String) -> UIImage? {
-        
-        guard let path = getImagePath(name: "\(imageName)")?.path  else {
-            print("error getting path!")
-            return nil
-        }
-
-        guard manager.fileExists(atPath: path) == true else {
-           // print("file not exists!")
-            return nil
-        }
-        
-        return UIImage(contentsOfFile: path)
-    }
-    
-    
-    func getImagePath(name : String) -> URL? {
-        guard let path = manager.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent("\(name).jpg") else {
-            print("can't get path!")
-            return nil
-        }
-        return path
-    }
-    
-    static func deleteImageFromFileManager(imageName : String) {
-        
-        guard let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            print("error : couldn't find directory")
-            return
-        }
-        
-        let imgfile = cacheDir.appendingPathComponent("\(imageName).jpg")
-        
-        if FileManager.default.fileExists(atPath: imgfile.path) {
-            do {
-                try FileManager.default.removeItem(at: imgfile)
-                print("\(imageName) deleted successfully!")
-            }
-            catch {
-                print("error deleting file!")
-            }
-        }
-        else {
-            print("404 not found!")
-        }
-        
-    }
-    
-    static func clearCache() {
-        guard let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            print("error : couldn't find directory")
-            return
-        }
-        
-        do {
-            // Get the directory contents urls (including subfolders urls)
-            let directoryContents = try FileManager.default.contentsOfDirectory( at: cacheDir, includingPropertiesForKeys: nil, options: [])
-            for file in directoryContents {
-                do {
-                    try FileManager.default.removeItem(at: file)
-                }
-                catch let error as NSError {
-                    debugPrint("Ooops! Something went wrong: \(error)")
-                }
-
-            }
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-    
-    }
-    
 }

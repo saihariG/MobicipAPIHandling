@@ -21,6 +21,7 @@
 		913DDEF1283E1529008CC486 /* ParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913DDEF0283E1529008CC486 /* ParentViewController.swift */; };
 		915B8EFF283CDE30000C1DB1 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915B8EFE283CDE30000C1DB1 /* KeyChainManager.swift */; };
 		916F4F0D285B0C2B001D6CAB /* UIImage+image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916F4F0C285B0C2B001D6CAB /* UIImage+image.swift */; };
+		916F4F11285B1587001D6CAB /* FileSystemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916F4F10285B1587001D6CAB /* FileSystemManager.swift */; };
 		91CB304D2840A03C00F046FE /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CB304C2840A03C00F046FE /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		913DDEF0283E1529008CC486 /* ParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentViewController.swift; sourceTree = "<group>"; };
 		915B8EFE283CDE30000C1DB1 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		916F4F0C285B0C2B001D6CAB /* UIImage+image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+image.swift"; sourceTree = "<group>"; };
+		916F4F10285B1587001D6CAB /* FileSystemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemManager.swift; sourceTree = "<group>"; };
 		91CB304C2840A03C00F046FE /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,6 +124,7 @@
 				915B8EFE283CDE30000C1DB1 /* KeyChainManager.swift */,
 				910F8F5D2833FA260092D427 /* CoreDataManager.swift */,
 				91CB304C2840A03C00F046FE /* NetworkManager.swift */,
+				916F4F10285B1587001D6CAB /* FileSystemManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				910F8F49283388BB0092D427 /* ViewController.swift in Sources */,
 				910F8F45283388BB0092D427 /* AppDelegate.swift in Sources */,
 				910F8F47283388BB0092D427 /* SceneDelegate.swift in Sources */,
+				916F4F11285B1587001D6CAB /* FileSystemManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

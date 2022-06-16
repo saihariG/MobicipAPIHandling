@@ -242,7 +242,6 @@ class ViewController: UIViewController {
         }
     }
     
-   
 }
 
 // keyboard handling

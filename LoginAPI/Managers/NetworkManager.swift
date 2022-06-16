@@ -271,6 +271,7 @@ class NetworkManager {
         
         if let response = data["mwsResponse"] as? [String: AnyObject] , let status = response["status"] as? [String: AnyObject], let code = status["code"] as? String , let message = status["message"] as? String {
            
+            //print(response)
             if code == "000" {
                 CoreDataManager.shared.saveUserListApi(coParentmwsResponse: response, mailId: loginMail)
                 completion(.success)
