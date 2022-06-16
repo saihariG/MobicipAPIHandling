@@ -74,14 +74,14 @@ class CoreDataManager {
         let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         privateMOC.parent = managedContext
         
-        guard let userApiData = LoginMwsResponse["user"] as? [String: AnyObject] , let userMail = userApiData["email"] as? String else {
+        guard let userApiData = LoginMwsResponse["user"] as? [String: AnyObject] , let userMail = userApiData["email"] as? String,let managedUsersApi = LoginMwsResponse["managed_users"] as? [[String : AnyObject]] else {
             return
         }
+       
         
         privateMOC.performAndWait {
             
             let userRequest = User.fetchRequest()
-           
             userRequest.predicate = NSPredicate(format: "email == %@", userMail)
             
             if let existingParent = try? privateMOC.fetch(userRequest) {
@@ -93,12 +93,101 @@ class CoreDataManager {
                     parentUser.name = userApiData["name"] as? String
                     parentUser.email = userApiData["email"] as? String
                     parentUser.thumbnail = userApiData["thumbnail"] as? String
+                    
+                    for managedUserApi in managedUsersApi {
+                        let childUser = ManagedUser(context: privateMOC)
+                        
+                        saveChildDetailsFromAPI(childuser: childUser, childApi: managedUserApi)
+                        
+                        parentUser.addToManagedUsers(childUser)
+                        childUser.addToUser(parentUser)
+                    }
                 }
                 else {
                     // update information
-                    existingParent[0].name = userApiData["name"] as? String
-                    existingParent[0].thumbnail = userApiData["thumbnail"] as? String
                     print("user already registered!")
+                    let managingUser = existingParent[0]
+                    managingUser.name = userApiData["name"] as? String
+                    managingUser.thumbnail = userApiData["thumbnail"] as? String
+                  
+                    if let managedUsers = managingUser.managedUsers?.allObjects as? [ManagedUser] {
+                        
+                        for managedUserApi in managedUsersApi {
+                            var isSaved = false
+                            for managedUser in managedUsers {
+                                if managedUser.uuid == managedUserApi["uuid"] as? String {
+                                    // updating name
+                                    if let name = managedUserApi["name"] as? String {
+                                        if managedUser.name != name {
+                                            managedUser.name = name
+                                        }
+                                    }
+                                    
+                                    if let thumbnail = managedUserApi["thumbnail"] as? String {
+                                        // checking if thumbnail from response is same as from db
+                                        if managedUser.thumbnail != thumbnail {
+                                           managedUser.thumbnail = thumbnail
+                                           // since the thumbnail is updated, deleting it from cache
+                                           manager.deleteImageFromFileManager(imageName: managedUser.uuid!)
+                                        }
+                                    }
+                                    
+                                    // updating bday
+                                    if let bday = managedUserApi["birth_date"] as? Int64 {
+                                        if managedUser.birth_date != bday {
+                                            managedUser.birth_date = bday
+                                        }
+                                    }
+                                    
+                                    saveChanges(pc: privateMOC)
+                                    
+                                    isSaved = true
+                                    break
+                                }
+                            }
+                            
+                            // if uuid not saved, means new user updated in server, so save it to core data
+                            if !isSaved {
+                                let newUser = ManagedUser(context: privateMOC)
+                        
+                                saveChildDetailsFromAPI(childuser: newUser, childApi: managedUserApi)
+                                
+                                managingUser.addToManagedUsers(newUser)
+                                newUser.addToUser(managingUser)
+                                
+                                saveChanges(pc: privateMOC)
+                            }
+                        }
+                    }
+                    
+                    var uuidList = [String]()
+                    
+                    for user in managedUsersApi {
+                        if let uuid = user["uuid"] as? String{
+                            uuidList.append(uuid)
+                        }
+                    }
+                
+                    // if the user is saved in core data but deleted from server,delete it in core data too
+                    do {
+                        let managingUser = try managedContext.fetch(userRequest) as [User]
+                        
+                        if let managedUsers = managingUser[0].managedUsers?.allObjects as? [ManagedUser]{
+                                   
+                                   for managedUser in managedUsers {
+                                       if !uuidList.contains(managedUser.uuid!) {
+                                           print("deleting data...!")
+                                           managedContext.delete(managedUser)
+                                           saveChanges(pc: privateMOC)
+                                       }
+                                
+                                   }
+                        }
+                        
+                    }catch {
+                        print("Error:", error)
+                    }
+                    
                 }
                 
                 saveChanges(pc: privateMOC)
@@ -274,6 +363,7 @@ class CoreDataManager {
                                         
                                         }
                                         
+                                        saveChanges(pc: privateMOC)
                                         isCoParentSaved = true
                                         break
                                     }
@@ -415,6 +505,8 @@ class CoreDataManager {
         let mailId = credentials["mailId"]
         
         request.predicate = NSPredicate(format: "email == %@" , mailId!)
+        //let sort = NSSortDescriptor(key: "name", ascending: true,selector: #selector(NSString.caseInsensitiveCompare(_:)))
+        //request.sortDescriptors = [sort]
         
         managedContext.performAndWait  { [self] in
             do {
@@ -447,6 +539,8 @@ class CoreDataManager {
         let request = User.fetchRequest()
      
         request.predicate = NSPredicate(format: "email == %@" , "\(mailId)")
+        //let sort = NSSortDescriptor(key: "name", ascending: true,selector: #selector(NSString.caseInsensitiveCompare(_:)))
+        //request.sortDescriptors = [sort]
         
         managedContext.performAndWait {
             
@@ -467,6 +561,7 @@ class CoreDataManager {
             }
         }
         
+        print(coChildList.count)
         return coChildList
     }
 
