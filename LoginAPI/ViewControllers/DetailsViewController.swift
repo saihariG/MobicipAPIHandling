@@ -56,7 +56,9 @@ class DetailsViewController: UIViewController {
     func showAlert(message : String) {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: "Error", message: "Message: \(message)", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "Close", style: .cancel)
+            let alertAction = UIAlertAction(title: "Close", style: .cancel) { _ in
+                self.navigationController?.popViewController(animated: true)
+            }
             
             alert.addAction(alertAction)
             self.present(alert, animated: true, completion: nil)

@@ -493,11 +493,13 @@ class CoreDataManager {
     
     func deleteData(mailId : String) {
 
+        let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        privateMOC.parent = managedContext
+        
         let request = User.fetchRequest()
         request.predicate = NSPredicate(format: "email == %@" , "\(mailId)")
         
-        managedContext.perform { [self] in
-            
+        privateMOC.perform { [self] in
             do
             {
                 let user = try managedContext.fetch(request)
@@ -512,12 +514,7 @@ class CoreDataManager {
             
                 }
             
-                do {
-                    try managedContext.save()
-                }
-                catch {
-                    print("error saving managed context!")
-                }
+                saveChanges(pc: privateMOC)
             }
             catch
             {

@@ -96,28 +96,29 @@ extension ChildViewController : UICollectionViewDataSource {
         
         cell.tag = indexPath.row
         DispatchQueue.global().async {
-                    let data = try? Data(contentsOf: url)
-                    if let data = data {
-                        let image = UIImage(data: data)!
-                        DispatchQueue.main.async {
-                            // saving the downloaded image in file manager
-                            guard let cacheDirectory  = FileSystemManager.shared.getImagePath(name: "\(String(describing: uuid))") else {
-                                return
-                            }
-                            
-                            do {
-                                try data.write(to: cacheDirectory)
-                            }
-                            catch {
-                                print("error canot save \(String(describing: uuid))'s profile!")
-                                return
-                            }
-                            
-                            if cell.tag == indexPath.row {
-                                cell.profileImg.image = image
-                            }
-                        }
+            
+            let data = try? Data(contentsOf: url)
+            if let data = data {
+                let image = UIImage(data: data)!
+                DispatchQueue.main.async {
+                    // saving the downloaded image in file manager
+                    guard let cacheDirectory  = FileSystemManager.shared.getImagePath(name: "\(String(describing: uuid))") else {
+                        return
                     }
+                            
+                    do {
+                        try data.write(to: cacheDirectory)
+                    }
+                    catch {
+                        print("error canot save \(String(describing: uuid))'s profile!")
+                        return
+                    }
+                            
+                    if cell.tag == indexPath.row {
+                        cell.profileImg.image = image
+                    }
+                }
+            }
         }
             
         return cell
