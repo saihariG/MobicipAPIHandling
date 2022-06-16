@@ -12,7 +12,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="LoginAPI" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="rootVC" id="BYZ-38-t0r" customClass="ViewController" customModule="LoginAPI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -156,7 +156,6 @@
                     <navigationItem key="navigationItem" id="QfX-uZ-Jrp"/>
                     <connections>
                         <outlet property="collectionView" destination="fKF-UW-wrW" id="VCd-xr-EuV"/>
-                        <segue destination="Ya0-S2-bL7" kind="show" identifier="parentSegueIdentifier" id="YTP-Qi-aKb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qhp-9C-8Mp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -168,17 +167,17 @@
             <objects>
                 <viewController storyboardIdentifier="childVC" id="Ya0-S2-bL7" customClass="ChildViewController" customModule="LoginAPI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Bzq-M4-4tD">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nothing Here..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dmF-7T-S3v">
-                                <rect key="frame" x="149" y="410.5" width="116" height="21"/>
+                                <rect key="frame" x="149" y="437.5" width="116" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="iKi-HH-IJy">
-                                <rect key="frame" x="0.0" y="44" width="414" height="798"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="gCO-uS-1Ce">
                                     <size key="itemSize" width="410" height="128"/>
@@ -238,7 +237,6 @@
                     <navigationItem key="navigationItem" id="YEw-MX-96j"/>
                     <connections>
                         <outlet property="collectionView" destination="iKi-HH-IJy" id="Fhh-je-8sQ"/>
-                        <segue destination="t6K-Tg-zcW" kind="show" identifier="segueIdentifier" id="mqd-6F-WkV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UEd-ta-vzb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -250,7 +248,7 @@
             <objects>
                 <viewController storyboardIdentifier="dvcIdentifier" id="t6K-Tg-zcW" customClass="DetailsViewController" customModule="LoginAPI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="o7w-1z-FZU">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uAb-mh-gZJ">

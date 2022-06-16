@@ -41,14 +41,6 @@ class ChildViewController: UIViewController {
         
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueIdentifier" {
-            let vc = segue.destination as! DetailsViewController
-            vc.name = coChildList[selectedChildIndex].name!
-            vc.uuid = coChildList[selectedChildIndex].uuid!
-        }
-    }
-    
 }
 
 extension ChildViewController : UICollectionViewDataSource {
@@ -131,7 +123,11 @@ extension ChildViewController : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // updating the selectedChildIndex
         selectedChildIndex = indexPath.row
-        performSegue(withIdentifier: "segueIdentifier", sender: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(identifier: "dvcIdentifier") as! DetailsViewController
+        vc.name = coChildList[selectedChildIndex].name!
+        vc.uuid = coChildList[selectedChildIndex].uuid!
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -75,14 +75,6 @@ class ParentViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "parentSegueIdentifier" {
-            let vc = segue.destination as! ChildViewController
-            vc.parentEmail = coParentList[selectedParentIdx].email!
-            vc.parentName = coParentList[selectedParentIdx].name!
-        }
-    }
-
     // shows alert dialog when encountered error
     func showAlert(code : String , message : String) {
         DispatchQueue.main.async {
@@ -178,7 +170,11 @@ extension ParentViewController : UICollectionViewDataSource {
 extension ParentViewController : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedParentIdx = indexPath.row
-        performSegue(withIdentifier: "parentSegueIdentifier", sender: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(identifier: "childVC") as! ChildViewController
+        vc.parentEmail = coParentList[selectedParentIdx].email!
+        vc.parentName = coParentList[selectedParentIdx].name!
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -160,6 +160,7 @@ class CoreDataManager {
                                     
                                     coUser.addToManagedUsers(childuser)
                                    
+                                    childuser.addToUser(coUser)
                                 }
                             }
                         }
@@ -262,6 +263,8 @@ class CoreDataManager {
                                                         isUpdated = true
                                                         
                                                         coParentUser.addToManagedUsers(newChild)
+                                                        
+                                                        newChild.addToUser(coParentUser)
                                                     }
                                                     
                                                 }
@@ -297,6 +300,7 @@ class CoreDataManager {
                                             saveChildDetailsFromAPI(childuser: childuser, childApi: child)
                                             
                                             newUser.addToManagedUsers(childuser)
+                                            childuser.addToUser(newUser)
 
                                         }
                                     
