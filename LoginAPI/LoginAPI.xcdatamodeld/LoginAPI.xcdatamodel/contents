@@ -17,7 +17,7 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="thumbnail" optional="YES" attributeType="String"/>
         <relationship name="coParents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="coParents" inverseEntity="User"/>
-        <relationship name="managedUsers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedUser" inverseName="user" inverseEntity="ManagedUser"/>
+        <relationship name="managedUsers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="user" inverseEntity="ManagedUser"/>
     </entity>
     <elements>
         <element name="ManagedUser" positionX="-36" positionY="27" width="128" height="179"/>

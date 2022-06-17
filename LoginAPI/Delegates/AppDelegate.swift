@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        print("app will terminate")
+        //print("app will terminate")
     }
     // MARK: - Core Data stack
 

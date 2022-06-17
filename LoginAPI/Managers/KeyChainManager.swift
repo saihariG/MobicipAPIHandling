@@ -98,7 +98,7 @@ class KeyChainManager {
     }
    
     func deleteData(){
-        print("Logging out!")
+        //print("Logging out!")
         
         let query = [
           kSecClass as String: kSecClassInternetPassword,

@@ -155,6 +155,7 @@ class CoreDataManager {
                                 managingUser.addToManagedUsers(newUser)
                                 newUser.addToUser(managingUser)
                                 
+                                //print("new child added to login")
                                 saveChanges(pc: privateMOC)
                             }
                         }
@@ -176,7 +177,7 @@ class CoreDataManager {
                                    
                                    for managedUser in managedUsers {
                                        if !uuidList.contains(managedUser.uuid!) {
-                                           print("deleting data...!")
+                                           print("deleting child user for login...!")
                                            managedContext.delete(managedUser)
                                            saveChanges(pc: privateMOC)
                                        }
@@ -354,6 +355,7 @@ class CoreDataManager {
                                                         coParentUser.addToManagedUsers(newChild)
                                                         
                                                         newChild.addToUser(coParentUser)
+                                                        saveChanges(pc: privateMOC)
                                                     }
                                                     
                                                 }
@@ -442,7 +444,7 @@ class CoreDataManager {
                                     for childUser in childUsers {
                                         if !uuidList.contains(childUser.uuid!) {
                                             isUpdated = true
-                                            print("deleting child!")
+                                            //print("deleting child!")
                                             managedContext.delete(childUser)
                                             saveChanges(pc: privateMOC)
                                         }
@@ -505,8 +507,6 @@ class CoreDataManager {
         let mailId = credentials["mailId"]
         
         request.predicate = NSPredicate(format: "email == %@" , mailId!)
-        //let sort = NSSortDescriptor(key: "name", ascending: true,selector: #selector(NSString.caseInsensitiveCompare(_:)))
-        //request.sortDescriptors = [sort]
         
         managedContext.performAndWait  { [self] in
             do {
@@ -530,7 +530,8 @@ class CoreDataManager {
             }
         }
         
-        return coParentsList
+        let sortedList : [User] = coParentsList.sorted(by: { $0.name! < $1.name! })
+        return sortedList
     }
     
     func fetchCoParentChildList(mailId : String) -> [ManagedUser] {
@@ -539,8 +540,6 @@ class CoreDataManager {
         let request = User.fetchRequest()
      
         request.predicate = NSPredicate(format: "email == %@" , "\(mailId)")
-        //let sort = NSSortDescriptor(key: "name", ascending: true,selector: #selector(NSString.caseInsensitiveCompare(_:)))
-        //request.sortDescriptors = [sort]
         
         managedContext.performAndWait {
             
@@ -561,8 +560,9 @@ class CoreDataManager {
             }
         }
         
-        print(coChildList.count)
-        return coChildList
+        // print(coChildList.count)
+        let sortedList : [ManagedUser] = coChildList.sorted(by: { $0.name! < $1.name! })
+        return sortedList
     }
 
     func fetchCoParentChildDetails(uuid : String) -> ManagedUser? {

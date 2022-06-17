@@ -53,7 +53,6 @@ class ViewController: UIViewController {
             return
         }
         
-        
         if remembered {
           
             spinner.isHidden = false
@@ -77,6 +76,7 @@ class ViewController: UIViewController {
                         }
                       
                     case .failure(let code, let message):
+                        
                         DispatchQueue.main.async { [self] in
                             view.isUserInteractionEnabled = true
                             spinner.stopAnimating()
@@ -110,10 +110,12 @@ class ViewController: UIViewController {
         // so, if not remembered, can delete data
         if !defaults.bool(forKey: "RememberMe") {
             let credentials = KeyChainManager.shared.retreiveCredentials()
-            let mailId = credentials["mailId"]
+            guard let mailId = credentials["mailId"] else {
+                return
+            }
             
             KeyChainManager.shared.deleteData()
-            coreDataContext.deleteData(mailId: mailId!)
+            coreDataContext.deleteData(mailId: mailId)
             manager.clearCache()
         }
         
