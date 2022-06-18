@@ -36,6 +36,7 @@ class ParentViewController: UIViewController {
                     case .success:
                         coParentList = coredata.fetchCoParentList()
                         if coParentList.isEmpty {
+                            // if parent list is empty then hiding collection view
                             DispatchQueue.main.async { [self] in
                                 collectionView.isHidden = true
                             }
@@ -67,10 +68,10 @@ class ParentViewController: UIViewController {
     @objc func signOut() {
       
         let credentials = KeyChainManager.shared.retreiveCredentials()
-        let mailId = credentials["mailId"]
+        guard let mailId = credentials["mailId"] else { return }
         
         KeyChainManager.shared.deleteData()
-        coredata.deleteData(mailId: mailId!)
+        coredata.deleteData(mailId: mailId)
         manager.clearCache()
         navigationController?.popViewController(animated: true)
     }

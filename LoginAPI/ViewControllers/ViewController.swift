@@ -26,10 +26,11 @@ class ViewController: UIViewController {
     }
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
+    // Userdefaults variable
     let defaults = UserDefaults.standard
     // shared context for CoreDataManager class
     let coreDataContext = CoreDataManager.shared
-    // shared context for NetworkManager class
+    // shared context for NetworkManager & File System manager class
     let networkContext = NetworkManager.shared
     let manager = FileSystemManager.shared
     
@@ -110,13 +111,13 @@ class ViewController: UIViewController {
         // so, if not remembered, can delete data
         if !defaults.bool(forKey: "RememberMe") {
             let credentials = KeyChainManager.shared.retreiveCredentials()
-            guard let mailId = credentials["mailId"] else {
-                return
+            
+            if let mailId = credentials["mailId"] {
+                KeyChainManager.shared.deleteData()
+                coreDataContext.deleteData(mailId: mailId)
+                manager.clearCache()
             }
             
-            KeyChainManager.shared.deleteData()
-            coreDataContext.deleteData(mailId: mailId)
-            manager.clearCache()
         }
         
         // Do any additional setup after loading the view
@@ -166,7 +167,7 @@ class ViewController: UIViewController {
         let pass = passField.text!
         
         if networkContext.isConnectedToNetwork() {
-            networkContext.generateHTTPRequest(mailId: emailField.text!, password: passField.text!) { [self] result in
+            networkContext.generateHTTPRequest(mailId: email, password: pass) { [self] result in
             
             switch result {
                 case .success:

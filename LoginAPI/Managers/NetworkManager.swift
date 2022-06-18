@@ -286,7 +286,7 @@ class NetworkManager {
         
         let currentTime = NSDate().timeIntervalSince1970
         
-        if currentTime >=  latestLoginTime + (15.0 * 60.0) {
+        if currentTime >=  latestLoginTime + (0.0 * 60.0) {
             return false
         }
         else {

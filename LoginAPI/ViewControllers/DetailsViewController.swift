@@ -44,6 +44,7 @@ class DetailsViewController: UIViewController {
         ageLabel.text = "Age : \(childUser.age)"
         genderLabel.text = "Gender : \(String(describing: childUser.gender))"
         birthDateLabel.text = "Birth Date : \(childUser.birth_date)"
+        // since uuid will be available whatsoever, force unwrapping it
         uuidLabel.text = "uuid : \(String(describing: childUser.uuid!))"
         timezoneLabel.text = "Time Zone : \(String(describing: childUser.timezone))"
         if let falcon_id = childUser.falcon_id {

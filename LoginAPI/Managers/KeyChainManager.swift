@@ -74,7 +74,7 @@ class KeyChainManager {
         ] as CFDictionary
 
         var result: AnyObject?
-        let status = SecItemCopyMatching(query, &result)
+        _ = SecItemCopyMatching(query, &result)
         
        // print("retrieve status : \(status)")
 
@@ -105,7 +105,7 @@ class KeyChainManager {
           kSecAttrServer as String: "https://webd.prgr.in/api/v2/login"
         ] as CFDictionary
 
-        let status = SecItemDelete(query)
+        _ = SecItemDelete(query)
         //print("deleting status : ", status)
     }
     

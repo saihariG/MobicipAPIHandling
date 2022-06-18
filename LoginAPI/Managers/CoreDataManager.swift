@@ -15,8 +15,7 @@ class CoreDataManager {
 
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let manager = FileSystemManager.shared
-    //var coChildCount = 0
-    
+   
     func saveChanges(pc : NSManagedObjectContext) {
     
         guard pc.hasChanges || managedContext.hasChanges else {
@@ -46,6 +45,7 @@ class CoreDataManager {
     
     }
     
+    // function to save child details from API to core data
     func saveChildDetailsFromAPI(childuser : ManagedUser , childApi : [String : AnyObject]) {
         
         childuser.uuid = childApi["uuid"] as? String
@@ -107,9 +107,11 @@ class CoreDataManager {
                     // update information
                     print("user already registered!")
                     let managingUser = existingParent[0]
+                    // updating details for managing user
                     managingUser.name = userApiData["name"] as? String
                     managingUser.thumbnail = userApiData["thumbnail"] as? String
                   
+                    // saving child details for login
                     if let managedUsers = managingUser.managedUsers?.allObjects as? [ManagedUser] {
                         
                         for managedUserApi in managedUsersApi {
@@ -504,9 +506,9 @@ class CoreDataManager {
         let request = User.fetchRequest()
         
         let credentials = KeyChainManager.shared.retreiveCredentials()
-        let mailId = credentials["mailId"]
+        guard let mailId = credentials["mailId"] else { return [] }
         
-        request.predicate = NSPredicate(format: "email == %@" , mailId!)
+        request.predicate = NSPredicate(format: "email == %@" , mailId)
         
         managedContext.performAndWait  { [self] in
             do {
